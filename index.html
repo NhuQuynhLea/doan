@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Editing Model Comparison Study</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            border-bottom: 4px solid #34495e;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .intro {
+            background: white;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border-left: 4px solid #2c3e50;
+        }
+
+        .intro h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .intro ul {
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .intro li {
+            margin-bottom: 0.3rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 3px solid #2c3e50;
+        }
+
+        .stat-card h3 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .stat-card p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .comparison-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .comparison-card {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #ecf0f1;
+            padding: 1.5rem;
+            border-bottom: 2px solid #bdc3c7;
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .prompt-section {
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .prompt-line {
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt-line strong {
+            color: #34495e;
+            font-weight: 600;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-weight: 500;
+            color: #856404;
+        }
+
+        .images-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .image-item {
+            text-align: center;
+            border-right: 1px solid #ecf0f1;
+            padding: 1.5rem 1rem;
+        }
+
+        .image-item:last-child {
+            border-right: none;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            border: 1px solid #dee2e6;
+        }
+
+        .image-item img:hover {
+            opacity: 0.85;
+        }
+
+        .image-label {
+            margin-top: 0.75rem;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .analysis {
+            background: #f8f9fa;
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .analysis-winner {
+            color: #27ae60;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .analysis-text {
+            color: #555;
+            line-height: 1.7;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #bdc3c7;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+            margin-top: 3rem;
+            background: white;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        @media (max-width: 1200px) {
+            .images-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .image-item:nth-child(2n) {
+                border-right: none;
+            }
+
+            .image-item:nth-child(-n+2) {
+                border-bottom: 1px solid #ecf0f1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .images-container {
+                grid-template-columns: 1fr;
+            }
+
+            .image-item {
+                border-right: none;
+                border-bottom: 1px solid #ecf0f1;
+            }
+
+            .image-item:last-child {
+                border-bottom: none;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card-header {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Comparative Analysis of Image Editing Models</h1>
+        <p>SwiftEdit, DMD2, and Qwen-Edit Performance Evaluation</p>
+    </header>
+
+    <div class="container">
+        <div class="intro">
+            <h2>Abstract</h2>
+            <p>This study presents a comprehensive comparison of three state-of-the-art image editing models across 15
+                diverse test cases:</p>
+            <ul>
+                <li><strong>Qwen-Edit</strong> – Advanced editing model focused on accuracy and detail preservation</li>
+                <li><strong>SwiftEdit</strong> – Fast, efficient model optimized for rapid iterations</li>
+                <li><strong>DMD2</strong> – High-quality diffusion model for detailed manipulations</li>
+            </ul>
+            <p style="margin-top: 1rem;">Each test case applies identical prompts across all models to evaluate their
+                capabilities in handling various editing tasks including object transformation, attribute modification,
+                style transfer, and spatial relationship changes.</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>3</h3>
+                <p>Models Evaluated</p>
+            </div>
+            <div class="stat-card">
+                <h3>15</h3>
+                <p>Test Cases</p>
+            </div>
+            <div class="stat-card">
+                <h3>60</h3>
+                <p>Total Edits</p>
+            </div>
+            <div class="stat-card">
+                <h3>100%</h3>
+                <p>Consistent Prompts</p>
+            </div>
+        </div>
+
+        <div class="comparison-grid" id="comparisonGrid"></div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage" alt="Full size image">
+    </div>
+
+    <footer>
+        <p>Image Editing Model Comparison Study © 2025</p>
+    </footer>
+
+    <script>
+        const comparisons = [
+            {
+                id: "00",
+                source: "a slanted mountain <span class='highlight'>bicycle</span> on the <span class='highlight'>road</span> in front of a <span class='highlight'>building</span>",
+                edit: "a slanted <span class='highlight'>rusty</span> mountain <span class='highlight'>motorcycle</span> in front of a <span class='highlight'>fence</span>",
+                original: "outputs/image/image.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image_edit_a_slanted_rusty_mountain_motor.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit.png",
+                qwenedit: "outputs/compare_result/edit0.png",
+                winner: "Qwen",
+                analysis: "Qwen perfect edit. DMD2 correct motorcycle. SwiftEdit texture-only."
+            },
+            {
+                id: "01",
+                source: "a <span class='highlight'>round</span> cake with <span class='highlight'>orange</span> frosting on a <span class='highlight'>wooden</span> plate",
+                edit: "a <span class='highlight'>square</span> cake with <span class='highlight'>strawberry</span> frosting on a <span class='highlight'>plastic</span> plate",
+                original: "outputs/image/image1.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image1_edit_a_square_cake_with_strawberry_.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit1.png",
+                qwenedit: "outputs/compare_result/edit1.png",
+                winner: "Qwen",
+                analysis: "Qwen success but hallucinated background. DMD2 failed geometric change."
+            },
+            {
+                id: "02",
+                source: "a <span class='highlight'>cat sitting</span> on a <span class='highlight'>wooden</span> chair",
+                edit: "a <span class='highlight'>red dog</span> with <span class='highlight'>flowers in mouth standing</span> on a <span class='highlight'>metal</span> chair",
+                original: "outputs/image/image2.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image2_edit_a_red_dog_with_flowers_in_mout.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit2.png",
+                qwenedit: "outputs/compare_result/edit2.png",
+                winner: "Qwen",
+                analysis: "Accurate red dog + flowers. DMD2 wrong color/pose."
+            },
+            {
+                id: "03",
+                source: "blue light, a black and white <span class='highlight'>cat</span> is playing with a <span class='highlight'>flower</span>",
+                edit: "blue light, a black and white <span class='highlight'>dog</span> is playing with a <span class='highlight'>yellow ball</span>",
+                original: "outputs/image/image3.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image3_edit_blue_light,_a_black_and_white_.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit3.png",
+                qwenedit: "outputs/compare_result/edit3.png",
+                winner: "Qwen",
+                analysis: "Qwen perfect. DMD2 good BW dog. SwiftEdit still a cat."
+            },
+            {
+                id: "04",
+                source: "a <span class='highlight'>cat sitting</span> next to a mirror",
+                edit: "a <span class='highlight'>silver cat sculpture standing</span> next to a mirror",
+                original: "outputs/image/image4.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image4_edit_a_silver_cat_sculpture_standin.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit4.png",
+                qwenedit: "outputs/compare_result/edit4.png",
+                winner: "Qwen",
+                analysis: "Perfect metal texture. DMD2 refused change. SwiftEdit noisy."
+            },
+            {
+                id: "06",
+                source: "a cup of <span class='highlight'>coffee</span> with drawing of <span class='highlight'>tulip</span> putted on the wooden table",
+                edit: "a <span class='highlight'>yellow</span> cup of <span class='highlight'>milk</span> with drawing of <span class='highlight'>rose</span> putted on the wooden table",
+                original: "outputs/image/image6.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image6_edit_a_yellow_cup_of_milk_with_draw.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit6.png",
+                qwenedit: "outputs/compare_result/edit6.png",
+                winner: "Qwen",
+                analysis: "Perfect yellow cup + milk + rose. DMD2 failed all."
+            },
+            {
+                id: "07",
+                source: "a german shepherd dog <span class='highlight'>stands</span> on the grass with <span class='highlight'>mouth closed</span>",
+                edit: "a <span class='highlight'>white</span> german shepherd dog <span class='highlight'>sits</span> on the grass with <span class='highlight'>big mouth opened</span>",
+                original: "outputs/image/image7.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image7_edit_a_white_german_shepherd_dog_si.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit7.png",
+                qwenedit: "outputs/compare_result/edit7.png",
+                winner: "Qwen",
+                analysis: "Full pose change. DMD2 only opened mouth."
+            },
+            {
+                id: "09",
+                source: "a <span class='highlight'>dog</span> is laying down on a <span class='highlight'>white</span> background",
+                edit: "<span class='highlight'>Painting</span> of a <span class='highlight'>lion</span> laying down on a <span class='highlight'>blue</span> background",
+                original: "outputs/image/image9.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image9_edit_Painting_of_a_lion_laying_down.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit9.png",
+                qwenedit: "outputs/compare_result/edit9.png",
+                winner: "Qwen",
+                analysis: "Full regeneration (lion). DMD2 black image. SwiftEdit distorted."
+            },
+            {
+                id: "26",
+                source: "a <span class='highlight'>yellow bird</span> with a <span class='highlight'>red beak</span> sitting on a branch",
+                edit: "a <span class='highlight'>toy cat</span> with a <span class='highlight'>red fur</span> sitting on a branch",
+                original: "outputs/image/image26.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image26_edit_a_toy_cat_with_a_red_fur_sitti.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit26.png",
+                qwenedit: "outputs/compare_result/edit26.png",
+                winner: "Qwen",
+                analysis: "Perfect toy cat, preserved background. DMD2 wrong color (orange)."
+            },
+            {
+                id: "27",
+                source: "a <span class='highlight'>opened eyes cat</span> sitting on <span class='highlight'>wooden floor</span>",
+                edit: "a <span class='highlight'>closed eyes dog</span> sitting on <span class='highlight'>green grass</span>",
+                original: "outputs/image/image27.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image27_edit_a_closed_eyes_dog_sitting_on_g.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit27.png",
+                qwenedit: "outputs/compare_result/edit27.png",
+                winner: "Qwen",
+                analysis: "Total scene rewrite. DMD2 cat-dog hybrid."
+            },
+            {
+                id: "28",
+                source: "<span class='highlight'>white</span> flowers on a tree branch with <span class='highlight'>blue sky</span> background",
+                edit: "<span class='highlight'>Painting</span> of <span class='highlight'>red</span> flowers on a tree branch with <span class='highlight'>white</span> background",
+                original: "outputs/image/image28.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image28_edit_Painting_of_red_flowers_on_a_t.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit28.png",
+                qwenedit: "outputs/compare_result/edit28.png",
+                winner: "Qwen",
+                analysis: "Accurate painting style. DMD2 color change only."
+            },
+            {
+                id: "93",
+                source: "a <span class='highlight'>collie dog</span> is <span class='highlight'>sitting</span> on a <span class='highlight'>bed</span>",
+                edit: "a <span class='highlight'>Garfield cat</span> is <span class='highlight'>sleeping</span> on a <span class='highlight'>sofa</span>",
+                original: "outputs/image/image93.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image93_edit_a_Garfield_cat_is_sleeping_on_.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit93.png",
+                qwenedit: "outputs/compare_result/edit93.png",
+                winner: "Qwen",
+                analysis: "Garfield + sofa. DMD2 striped cat wrong pose. SwiftEdit cat on bed."
+            },
+            {
+                id: "95",
+                source: "a painting of a fairy with <span class='highlight'>green</span> wings holding a <span class='highlight'>glowing jar</span>",
+                edit: "a painting of a fairy with <span class='highlight'>purple</span> wings holding a <span class='highlight'>white crystal ball</span>",
+                original: "outputs/image/image95.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image95_edit_a_painting_of_a_fairy_with_pur.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit95.png",
+                qwenedit: "outputs/compare_result/edit95.png",
+                winner: "Qwen",
+                analysis: "Perfect purple wings + crystal ball. DMD2 wings still green."
+            },
+            {
+                id: "98",
+                source: "a <span class='highlight'>light bulb</span> hanging from a wire with <span class='highlight'>sky</span> in the background",
+                edit: "a <span class='highlight'>cat</span> hanging from a wire with <span class='highlight'>grass</span> in the background",
+                original: "outputs/image/image98.jpg",
+                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image98_edit_a_cat_hanging_from_a_wire_with.png",
+                dmd2: "outputs/dmd2_result/result_renoise_edit98.png",
+                qwenedit: "outputs/compare_result/edit98.png",
+                winner: "Qwen",
+                analysis: "Correct cat + grass. DMD2 wind chime instead. SwiftEdit cat face artifact."
+            }
+        ];
+
+        function generateComparisonCards() {
+            const grid = document.getElementById('comparisonGrid');
+            grid.innerHTML = '';
+
+            comparisons.forEach(comp => {
+                const card = document.createElement('div');
+                card.className = 'comparison-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3>Test Case ${comp.id}</h3>
+                        <div class="prompt-section">
+                            <div class="prompt-line"><strong>Source:</strong> ${comp.source}</div>
+                            <div class="prompt-line"><strong>Edit:</strong> ${comp.edit}</div>
+                        </div>
+                    </div>
+                    <div class="images-container">
+                        <div class="image-item">
+                            <img src="${comp.original}" alt="Original" onclick="openModal(this.src)" onerror="this.style.opacity='0.3'">
+                            <div class="image-label">Original</div>
+                        </div>
+                        
+                        <div class="image-item">
+                            <img src="${comp.swiftedit}" alt="SwiftEdit" onclick="openModal(this.src)" onerror="this.style.opacity='0.3'">
+                            <div class="image-label">SwiftEdit</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="${comp.dmd2}" alt="DMD2" onclick="openModal(this.src)" onerror="this.style.opacity='0.3'">
+                            <div class="image-label">DMD2</div>
+                        </div>
+                        <div class="image-item">
+                            <img src="${comp.qwenedit}" alt="Qwen-Edit" onclick="openModal(this.src)" onerror="this.style.opacity='0.3'">
+                            <div class="image-label">Qwen-Edit</div>
+                        </div>
+                    </div>
+                    <div class="analysis">
+                        <div class="analysis-winner">Winner: ${comp.winner}</div>
+                        <div class="analysis-text">${comp.analysis}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'flex';
+            modalImg.src = src;
+        }
+
+        document.querySelector('.close').onclick = function () {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                document.getElementById('imageModal').style.display = 'none';
+            }
+        });
+
+        generateComparisonCards();
+    </script>
+</body>
+
+</html>
