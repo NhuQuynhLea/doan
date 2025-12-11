@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Editing Model Comparison Study</title>
+    <title>Image Editing Models Comparison Report</title>
     <style>
         * {
             margin: 0;
@@ -28,13 +28,13 @@
         }
 
         header h1 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
 
         header p {
-            font-size: 1rem;
+            font-size: 1.2rem;
             opacity: 0.9;
             font-weight: 300;
         }
@@ -45,7 +45,7 @@
             padding: 0 2rem;
         }
 
-        .intro {
+        section {
             background: white;
             padding: 2rem;
             border-radius: 4px;
@@ -54,91 +54,117 @@
             border-left: 4px solid #2c3e50;
         }
 
-        .intro h2 {
+        section h2 {
             color: #2c3e50;
             margin-bottom: 1rem;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 600;
         }
 
-        .intro ul {
-            margin-left: 2rem;
-            margin-top: 0.5rem;
-        }
-
-        .intro li {
-            margin-bottom: 0.3rem;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            border-top: 3px solid #2c3e50;
-        }
-
-        .stat-card h3 {
-            color: #2c3e50;
-            font-size: 2rem;
-            margin-bottom: 0.3rem;
-            font-weight: 600;
-        }
-
-        .stat-card p {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            font-weight: 400;
-        }
-
-        .comparison-grid {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .comparison-card {
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .card-header {
-            background: #ecf0f1;
-            padding: 1.5rem;
-            border-bottom: 2px solid #bdc3c7;
-        }
-
-        .card-header h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .prompt-section {
-            font-size: 0.95rem;
-            line-height: 1.8;
-        }
-
-        .prompt-line {
-            margin-bottom: 0.5rem;
-        }
-
-        .prompt-line strong {
+        section h3 {
             color: #34495e;
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #ecf0f1;
             font-weight: 600;
         }
 
-        .highlight {
+        th:first-child,
+        td:first-child {
+            width: 5%;
+            text-align: center;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 20%;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3),
+        th:nth-child(4),
+        td:nth-child(4),
+        th:nth-child(5),
+        td:nth-child(5),
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 12%;
+            text-align: center;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            width: 8%;
+            text-align: center;
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 19%;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
+            border: 1px solid #dee2e6;
+            border-radius: 2px;
+            width: 300px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .prompt {
+            white-space: normal;
+            word-wrap: break-word;
+            font-size: 0.9rem;
+        }
+
+        .eval-img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            border: none;
+        }
+
+        td.prompt {
+            text-align: left !important;
+        }
+
+        td.observation {
+            text-align: left !important;
+        }
+
+        em u {
             background: #fff3cd;
             padding: 2px 4px;
             border-radius: 2px;
@@ -146,60 +172,12 @@
             color: #856404;
         }
 
-        .images-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            border-bottom: 1px solid #ecf0f1;
-        }
-
-        .image-item {
-            text-align: center;
-            border-right: 1px solid #ecf0f1;
-            padding: 1.5rem 1rem;
-        }
-
-        .image-item:last-child {
-            border-right: none;
-        }
-
-        .image-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            border: 1px solid #dee2e6;
-        }
-
-        .image-item img:hover {
-            opacity: 0.85;
-        }
-
-        .image-label {
-            margin-top: 0.75rem;
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 0.9rem;
-        }
-
-        .analysis {
+        .blockquote {
             background: #f8f9fa;
-            padding: 1.25rem 1.5rem;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .analysis-winner {
-            color: #27ae60;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .analysis-text {
-            color: #555;
-            line-height: 1.7;
-            font-size: 0.9rem;
+            padding: 1rem;
+            border-left: 4px solid #bdc3c7;
+            margin: 1rem 0;
+            font-style: italic;
         }
 
         .modal {
@@ -237,47 +215,33 @@
 
         footer {
             text-align: center;
-            padding: 2rem;
+            padding: 1rem;
             color: #7f8c8d;
-            margin-top: 3rem;
+            margin-top: 2rem;
             background: white;
             border-top: 1px solid #ecf0f1;
         }
 
-        @media (max-width: 1200px) {
-            .images-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .image-item:nth-child(2n) {
-                border-right: none;
-            }
-
-            .image-item:nth-child(-n+2) {
-                border-bottom: 1px solid #ecf0f1;
-            }
-        }
-
         @media (max-width: 768px) {
-            .images-container {
-                grid-template-columns: 1fr;
-            }
-
-            .image-item {
-                border-right: none;
-                border-bottom: 1px solid #ecf0f1;
-            }
-
-            .image-item:last-child {
-                border-bottom: none;
-            }
-
             header h1 {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
 
-            .card-header {
-                padding: 1rem;
+            section {
+                padding: 1.5rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            img {
+                width: 200px;
+                height: 100px;
+            }
+
+            .prompt {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -285,45 +249,448 @@
 
 <body>
     <header>
-        <h1>Comparative Analysis of Image Editing Models</h1>
-        <p>SwiftEdit, DMD2, and Qwen-Edit Performance Evaluation</p>
+        <h1>Image Editing Models Comparison Report</h1>
+        <p>Experimental Study: SwiftEdit vs DMD2 vs Qwen-Edit</p>
     </header>
 
     <div class="container">
-        <div class="intro">
-            <h2>Abstract</h2>
-            <p>This study presents a comprehensive comparison of three state-of-the-art image editing models across 15
-                diverse test cases:</p>
-            <ul>
-                <li><strong>Qwen-Edit</strong> – Advanced editing model focused on accuracy and detail preservation</li>
-                <li><strong>SwiftEdit</strong> – Fast, efficient model optimized for rapid iterations</li>
-                <li><strong>DMD2</strong> – High-quality diffusion model for detailed manipulations</li>
-            </ul>
-            <p style="margin-top: 1rem;">Each test case applies identical prompts across all models to evaluate their
-                capabilities in handling various editing tasks including object transformation, attribute modification,
-                style transfer, and spatial relationship changes.</p>
-        </div>
+        <section id="intro">
+            <h2>Introduction</h2>
+            <p>Qwen-Edit, based on the Qwen large language model architecture, is recognized as a
+                <strong>State-of-the-Art (SOTA)</strong> image editing foundation model. Its architecture integrates
+                advanced text-image alignment and diffusion model technology to achieve high-precision semantic and
+                appearance editing, setting a new benchmark for complex instruction following.
+            </p>
+            <p>This report evaluates Qwen-Edit against two high-speed alternatives, SwiftEdit (SE) and DMD2, under
+                rigorous experimental conditions on an NVIDIA RTX 3090. The objective is to determine if Qwen-Edit's
+                superior cognitive capacity justifies its higher computational cost when performing complex, non-trivial
+                image transformations.</p>
 
-        <div class="stats">
-            <div class="stat-card">
-                <h3>3</h3>
-                <p>Models Evaluated</p>
-            </div>
-            <div class="stat-card">
-                <h3>15</h3>
-                <p>Test Cases</p>
-            </div>
-            <div class="stat-card">
-                <h3>60</h3>
-                <p>Total Edits</p>
-            </div>
-            <div class="stat-card">
-                <h3>100%</h3>
-                <p>Consistent Prompts</p>
-            </div>
-        </div>
+            <em>As shown in the following table from ImgEdit-Bench, Qwen-Image-Edit achieves the highest average score,
+                confirming its SOTA status.</em>
+            <img src="eval.png" class="eval-img" alt="ImgEdit-Bench Results">
 
-        <div class="comparison-grid" id="comparisonGrid"></div>
+        </section>
+        <section id="comparison">
+            <h2>3.1 Complete Comparison Table</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Source Prompt → Edit Prompt</th>
+                            <th>Source Image</th>
+                            <th>SwiftEdit</th>
+                            <th>DMD2</th>
+                            <th>Qwen-Edit</th>
+                            <th>Winner</th>
+                            <th>Key Observation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="center"><strong>00</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a slanted mountain <em><u>bicycle</u></em> on the
+                                <em><u>road</u></em> in front of a <em><u>building</u></em><br />
+                                <strong>Edit:</strong> a slanted <em><u>rusty</u></em> mountain
+                                <em><u>motorcycle</u></em> in front of a <em><u>fence</u></em>
+                            </td>
+                            <td align="center"><img src="outputs/image/image.jpg" alt="Source 00"
+                                    onclick="openModal(this.src)">
+                            </td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image_edit_a_slanted_rusty_mountain_motor.png"
+                                    alt="SwiftEdit 00" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit.png" alt="DMD2 00"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit0.png" alt="Qwen-Edit 00"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Added fence/rust.<br>DMD2:
+                                Success on motorcycle,
+                                ignored fence.<br>SwiftEdit: Texture change only.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>01</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a <em><u>round</u></em> cake with <em><u>orange</u></em>
+                                frosting on a <em><u>wooden</u></em> plate<br />
+                                <strong>Edit:</strong> a <em><u>square</u></em> cake with <em><u>strawberry</u></em>
+                                frosting on a <em><u>plastic</u></em> plate
+                            </td>
+                            <td align="center"><img src="outputs/image/image1.jpg" alt="Source 01"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image1_edit_a_square_cake_with_strawberry_.png"
+                                    alt="SwiftEdit 01" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit1.png" alt="DMD2 01"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit1.png" alt="Qwen-Edit 01"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Success.<br>DMD2: Failed
+                                geometric change
+                                (Round->Square).<br>SwiftEdit: No visible change.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>02</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a <em><u>cat sitting</u></em> on a <em><u>wooden</u></em>
+                                chair<br />
+                                <strong>Edit:</strong> a <em><u>red dog</u></em> with <em><u>flowers in mouth
+                                        standing</u></em> on a <em><u>metal</u></em> chair
+                            </td>
+                            <td align="center"><img src="outputs/image/image2.jpg" alt="Source 02"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image2_edit_a_red_dog_with_flowers_in_mout.png"
+                                    alt="SwiftEdit 02" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit2.png" alt="DMD2 02"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit2.png" alt="Qwen-Edit 02"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Accurate red dog + flowers.<br>DMD2: Wrong
+                                color/pose/chair.<br>SwiftEdit: Wrong color/pose/chair.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>03</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> blue light, a black and white <em><u>cat</u></em> is playing
+                                with a <em><u>flower</u></em><br />
+                                <strong>Edit:</strong> blue light, a black and white <em><u>dog</u></em> is playing with
+                                a <em><u>yellow ball</u></em>
+                            </td>
+                            <td align="center"><img src="outputs/image/image3.jpg" alt="Source 03"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image3_edit_blue_light,_a_black_and_white_.png"
+                                    alt="SwiftEdit 03" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit3.png" alt="DMD2 03"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit3.png" alt="Qwen-Edit 03"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Accurate dog + yellow ball.<br>DMD2: Correct dog + ball
+                                color,
+                                weird
+                                ball-flower
+                                artifact.<br>SwiftEdit: Still a cat.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>04</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a <em><u>cat sitting</u></em> next to a mirror<br />
+                                <strong>Edit:</strong> a <em><u>silver cat sculpture standing</u></em> next to a mirror
+                            </td>
+                            <td align="center"><img src="outputs/image/image4.jpg" alt="Source 04"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image4_edit_a_silver_cat_sculpture_standin.png"
+                                    alt="SwiftEdit 04" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit4.png" alt="DMD2 04"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit4.png" alt="Qwen-Edit 04"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Perfect material transfer.<br>DMD2: Refused to change fur
+                                to
+                                metal.<br>SwiftEdit: Noisy/degraded texture.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>06</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a cup of <em><u>coffee</u></em> with drawing of
+                                <em><u>tulip</u></em> putted on the wooden table<br />
+                                <strong>Edit:</strong> a <em><u>yellow</u></em> cup of <em><u>milk</u></em> with drawing
+                                of <em><u>rose</u></em> putted on the wooden table
+                            </td>
+                            <td align="center"><img src="outputs/image/image6.jpg" alt="Source 06"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image6_edit_a_yellow_cup_of_milk_with_draw.png"
+                                    alt="SwiftEdit 06" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit6.png" alt="DMD2 06"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit6.png" alt="Qwen-Edit 06"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Perfect execution of Yellow Cup + Milk + Rose.<br>DMD2:
+                                Failed to change cup
+                                color or liquid.<br>SwiftEdit: Partial shape change, wrong colors.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>07</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a german shepherd dog <em><u>stands</u></em> on the grass with
+                                <em><u>mouth closed</u></em><br />
+                                <strong>Edit:</strong> a <em><u>white</u></em> german shepherd dog <em><u>sits</u></em>
+                                on the grass with <em><u>big mouth opened</u></em>
+                            </td>
+                            <td align="center"><img src="outputs/image/image7.jpg" alt="Source 07"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image7_edit_a_white_german_shepherd_dog_si.png"
+                                    alt="SwiftEdit 07" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit7.png" alt="DMD2 07"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit7.png" alt="Qwen-Edit 07"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Handled complex pose change (Sit).<br>DMD2: Only opened
+                                mouth, ignored
+                                sit/white.<br>SwiftEdit: Changed color/mouth, failed pose.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>09</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a <em><u>dog</u></em> is laying down on a <em><u>white</u></em>
+                                background<br />
+                                <strong>Edit:</strong> <em><u>Painting</u></em> of a <em><u>lion</u></em> laying down on
+                                a <em><u>blue</u></em> background
+                            </td>
+                            <td align="center"><img src="outputs/image/image9.jpg" alt="Source 09"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image9_edit_Painting_of_a_lion_laying_down.png"
+                                    alt="SwiftEdit 09" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit9.png" alt="DMD2 09"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit9.png" alt="Qwen-Edit 09"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Success, complete regeneration.<br>DMD2: Technical
+                                Failure (Black
+                                Image).<br>SwiftEdit: Distorted Corgi.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>26</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a <em><u>yellow bird</u></em> with a <em><u>red beak</u></em>
+                                sitting on a branch<br />
+                                <strong>Edit:</strong> a <em><u>toy cat</u></em> with a <em><u>red fur</u></em> sitting
+                                on a branch
+                            </td>
+                            <td align="center"><img src="outputs/image/image26.jpg" alt="Source 26"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image26_edit_a_toy_cat_with_a_red_fur_sitti.png"
+                                    alt="SwiftEdit 26" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit26.png" alt="DMD2 26"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit26.png" alt="Qwen-Edit 26"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Perfect toy cat, retained forest bg.<br>DMD2: Toy cat but
+                                wrong color
+                                (Orange).<br>SwiftEdit: Looks like a distorted bird.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>27</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a <em><u>opened eyes cat</u></em> sitting on <em><u>wooden
+                                        floor</u></em><br />
+                                <strong>Edit:</strong> a <em><u>closed eyes dog</u></em> sitting on <em><u>green
+                                        grass</u></em>
+                            </td>
+                            <td align="center"><img src="outputs/image/image27.jpg" alt="Source 27"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image27_edit_a_closed_eyes_dog_sitting_on_g.png"
+                                    alt="SwiftEdit 27" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit27.png" alt="DMD2 27"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit27.png" alt="Qwen-Edit 27"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Total scene rewrite (Dog+Grass).<br>DMD2:Acurrate dog,
+                                but failed species
+                                close eyes.<br>SwiftEdit: Closed eye, but failed species/bg.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>28</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> <em><u>white</u></em> flowers on a tree branch with <em><u>blue
+                                        sky</u></em> background<br />
+                                <strong>Edit:</strong> <em><u>Painting</u></em> of <em><u>red</u></em> flowers on a tree
+                                branch with <em><u>white</u></em> background
+                            </td>
+                            <td align="center"><img src="outputs/image/image28.jpg" alt="Source 28"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image28_edit_Painting_of_red_flowers_on_a_t.png"
+                                    alt="SwiftEdit 28" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit28.png" alt="DMD2 28"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit28.png" alt="Qwen-Edit 28"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Perfect style transfer.<br>DMD2: Changed color, ignored
+                                bg.<br>SwiftEdit:
+                                Failed.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>93</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a <em><u>collie dog</u></em> is <em><u>sitting</u></em> on a
+                                <em><u>bed</u></em><br />
+                                <strong>Edit:</strong> a <em><u>Garfield cat</u></em> is <em><u>sleeping</u></em> on a
+                                <em><u>sofa</u></em>
+                            </td>
+                            <td align="center"><img src="outputs/image/image93.jpg" alt="Source 93"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image93_edit_a_Garfield_cat_is_sleeping_on_.png"
+                                    alt="SwiftEdit 93" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit93.png" alt="DMD2 93"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit93.png" alt="Qwen-Edit 93"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Orange striped cat + Sofa.<br>DMD2: Striped cat but wrong
+                                pose.<br>SwiftEdit: Cat on bed (not sofa).</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>95</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a painting of a fairy with <em><u>green</u></em> wings holding
+                                a <em><u>glowing jar</u></em><br />
+                                <strong>Edit:</strong> a painting of a fairy with <em><u>purple</u></em> wings holding a
+                                <em><u>white crystal ball</u></em>
+                            </td>
+                            <td align="center"><img src="outputs/image/image95.jpg" alt="Source 95"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image95_edit_a_painting_of_a_fairy_with_pur.png"
+                                    alt="SwiftEdit 95" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit95.png" alt="DMD2 95"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit95.png" alt="Qwen-Edit 95"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Perfect Purple Wings + Crystal Ball.<br>DMD2: Crystal
+                                ball success, wings
+                                stayed green.<br>SwiftEdit: Color shifts, wings stayed green.</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><strong>98</strong></td>
+                            <td class="prompt">
+                                <strong>Source:</strong> a <em><u>light bulb</u></em> hanging from a wire with
+                                <em><u>sky</u></em> in the background<br />
+                                <strong>Edit:</strong> a <em><u>cat</u></em> hanging from a wire with
+                                <em><u>grass</u></em> in the background
+                            </td>
+                            <td align="center"><img src="outputs/image/image98.jpg" alt="Source 98"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img
+                                    src="outputs/swiftedit_results/swift_edit_result_img/image98_edit_a_cat_hanging_from_a_wire_with.png"
+                                    alt="SwiftEdit 98" onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/dmd2_result/result_renoise_edit98.png" alt="DMD2 98"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><img src="outputs/compare_result/edit98.png" alt="Qwen-Edit 98"
+                                    onclick="openModal(this.src)"></td>
+                            <td align="center"><strong>Qwen</strong></td>
+                            <td class="observation">Qwen-Edit: Cat hanging + Grass background.<br>DMD2: Made a wind
+                                chime, no
+                                cat.<br>SwiftEdit: Cat face inside bulb artifact.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section id="system-requirements">
+            <h2>2. System Requirements & Performance</h2>
+            <h4>Resource Utilization (RTX 3090)</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>VRAM Usage</th>
+                        <th>Inference Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SwiftEdit (SE)</strong></td>
+                        <td>22 GB</td>
+                        <td><strong>0.67s</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>DMD2</strong></td>
+                        <td><strong>18 GB</strong></td>
+                        <td>1.3s</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Qwen-Edit</strong></td>
+                        <td>23 GB</td>
+                        <td>26s</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="blockquote">
+                <strong>Key Insight:</strong> SwiftEdit is <strong>52× faster</strong> than Qwen-Edit, while DMD2 is the
+                most memory-efficient, using 18% less memory than SwiftEdit.
+            </div>
+        </section>
+
+        <section id="experimental-configs">
+            <h2>3. Experimental Configurations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>SwiftEdit</th>
+                        <th>DMD2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Base Model</td>
+                        <td>SD 2.1</td>
+                        <td>SDXL 1.0</td>
+                    </tr>
+                    <tr>
+                        <td>IP-Adapter</td>
+                        <td>IP-SBv2</td>
+                        <td>IP-Adapter-Plus SDXL (ViT-H)</td>
+                    </tr>
+                    <tr>
+                        <td>Inference Step</td>
+                        <td>1 step</td>
+                        <td>4 step (via LoRA)</td>
+                    </tr>
+                    <tr>
+                        <td>Latent Source</td>
+                        <td>Inversion Model (same architecture as SBv2)</td>
+                        <td>ReNoise Inversion (arXiv:2403.14602)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+        <section id="conclusions">
+            <h2>4. Conclusions & Recommendations</h2>
+            <p>Based on the experimental data, the conclusion is clear:</p>
+            <ol>
+                <li><strong>SwiftEdit</strong> is fast (0.67s) but <strong>ineffective</strong> for meaningful editing;
+                    it often produces noise or minimal changes.</li>
+                <li><strong>DMD2</strong> is efficient (1.3s, 18GB VRAM) but suffers from <strong>rigidity</strong>; it
+                    struggles to alter the structure or geometry of an image.</li>
+                <li><strong>Qwen-Edit</strong> is the <strong>only viable solution for professional-grade
+                        editing</strong>.</li>
+            </ol>
+            <h3>Final Verdict</h3>
+            <div class="blockquote">
+                Although <strong>Qwen-Edit</strong> requires 26 seconds and 23GB VRAM, it is the only model that
+                consistently understands complex prompts, correctly handles physics/material changes (e.g., Fur →
+                Silver), and modifies geometry (e.g., Round → Square). <strong>Speed is irrelevant if the output is
+                    incorrect; therefore, Qwen-Edit is the optimal choice.</strong>
+            </div>
+        </section>
     </div>
 
     <div id="imageModal" class="modal">
@@ -332,210 +699,10 @@
     </div>
 
     <footer>
-        <p>Image Editing Model Comparison Study © 2025</p>
+        <p>Image Editing Models Comparison Report © 2025</p>
     </footer>
 
     <script>
-        const comparisons = [
-            {
-                id: "00",
-                source: "a slanted mountain <span class='highlight'>bicycle</span> on the <span class='highlight'>road</span> in front of a <span class='highlight'>building</span>",
-                edit: "a slanted <span class='highlight'>rusty</span> mountain <span class='highlight'>motorcycle</span> in front of a <span class='highlight'>fence</span>",
-                original: "outputs/image/image.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image_edit_a_slanted_rusty_mountain_motor.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit.png",
-                qwenedit: "outputs/compare_result/edit0.png",
-                winner: "Qwen",
-                analysis: "Qwen perfect edit. DMD2 correct motorcycle. SwiftEdit texture-only."
-            },
-            {
-                id: "01",
-                source: "a <span class='highlight'>round</span> cake with <span class='highlight'>orange</span> frosting on a <span class='highlight'>wooden</span> plate",
-                edit: "a <span class='highlight'>square</span> cake with <span class='highlight'>strawberry</span> frosting on a <span class='highlight'>plastic</span> plate",
-                original: "outputs/image/image1.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image1_edit_a_square_cake_with_strawberry_.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit1.png",
-                qwenedit: "outputs/compare_result/edit1.png",
-                winner: "Qwen",
-                analysis: "Qwen success but hallucinated background. DMD2 failed geometric change."
-            },
-            {
-                id: "02",
-                source: "a <span class='highlight'>cat sitting</span> on a <span class='highlight'>wooden</span> chair",
-                edit: "a <span class='highlight'>red dog</span> with <span class='highlight'>flowers in mouth standing</span> on a <span class='highlight'>metal</span> chair",
-                original: "outputs/image/image2.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image2_edit_a_red_dog_with_flowers_in_mout.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit2.png",
-                qwenedit: "outputs/compare_result/edit2.png",
-                winner: "Qwen",
-                analysis: "Accurate red dog + flowers. DMD2 wrong color/pose."
-            },
-            {
-                id: "03",
-                source: "blue light, a black and white <span class='highlight'>cat</span> is playing with a <span class='highlight'>flower</span>",
-                edit: "blue light, a black and white <span class='highlight'>dog</span> is playing with a <span class='highlight'>yellow ball</span>",
-                original: "outputs/image/image3.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image3_edit_blue_light,_a_black_and_white_.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit3.png",
-                qwenedit: "outputs/compare_result/edit3.png",
-                winner: "Qwen",
-                analysis: "Qwen perfect. DMD2 good BW dog. SwiftEdit still a cat."
-            },
-            {
-                id: "04",
-                source: "a <span class='highlight'>cat sitting</span> next to a mirror",
-                edit: "a <span class='highlight'>silver cat sculpture standing</span> next to a mirror",
-                original: "outputs/image/image4.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image4_edit_a_silver_cat_sculpture_standin.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit4.png",
-                qwenedit: "outputs/compare_result/edit4.png",
-                winner: "Qwen",
-                analysis: "Perfect metal texture. DMD2 refused change. SwiftEdit noisy."
-            },
-            {
-                id: "06",
-                source: "a cup of <span class='highlight'>coffee</span> with drawing of <span class='highlight'>tulip</span> putted on the wooden table",
-                edit: "a <span class='highlight'>yellow</span> cup of <span class='highlight'>milk</span> with drawing of <span class='highlight'>rose</span> putted on the wooden table",
-                original: "outputs/image/image6.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image6_edit_a_yellow_cup_of_milk_with_draw.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit6.png",
-                qwenedit: "outputs/compare_result/edit6.png",
-                winner: "Qwen",
-                analysis: "Perfect yellow cup + milk + rose. DMD2 failed all."
-            },
-            {
-                id: "07",
-                source: "a german shepherd dog <span class='highlight'>stands</span> on the grass with <span class='highlight'>mouth closed</span>",
-                edit: "a <span class='highlight'>white</span> german shepherd dog <span class='highlight'>sits</span> on the grass with <span class='highlight'>big mouth opened</span>",
-                original: "outputs/image/image7.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image7_edit_a_white_german_shepherd_dog_si.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit7.png",
-                qwenedit: "outputs/compare_result/edit7.png",
-                winner: "Qwen",
-                analysis: "Full pose change. DMD2 only opened mouth."
-            },
-            {
-                id: "09",
-                source: "a <span class='highlight'>dog</span> is laying down on a <span class='highlight'>white</span> background",
-                edit: "<span class='highlight'>Painting</span> of a <span class='highlight'>lion</span> laying down on a <span class='highlight'>blue</span> background",
-                original: "outputs/image/image9.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image9_edit_Painting_of_a_lion_laying_down.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit9.png",
-                qwenedit: "outputs/compare_result/edit9.png",
-                winner: "Qwen",
-                analysis: "Full regeneration (lion). DMD2 black image. SwiftEdit distorted."
-            },
-            {
-                id: "26",
-                source: "a <span class='highlight'>yellow bird</span> with a <span class='highlight'>red beak</span> sitting on a branch",
-                edit: "a <span class='highlight'>toy cat</span> with a <span class='highlight'>red fur</span> sitting on a branch",
-                original: "outputs/image/image26.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image26_edit_a_toy_cat_with_a_red_fur_sitti.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit26.png",
-                qwenedit: "outputs/compare_result/edit26.png",
-                winner: "Qwen",
-                analysis: "Perfect toy cat, preserved background. DMD2 wrong color (orange)."
-            },
-            {
-                id: "27",
-                source: "a <span class='highlight'>opened eyes cat</span> sitting on <span class='highlight'>wooden floor</span>",
-                edit: "a <span class='highlight'>closed eyes dog</span> sitting on <span class='highlight'>green grass</span>",
-                original: "outputs/image/image27.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image27_edit_a_closed_eyes_dog_sitting_on_g.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit27.png",
-                qwenedit: "outputs/compare_result/edit27.png",
-                winner: "Qwen",
-                analysis: "Total scene rewrite. DMD2 cat-dog hybrid."
-            },
-            {
-                id: "28",
-                source: "<span class='highlight'>white</span> flowers on a tree branch with <span class='highlight'>blue sky</span> background",
-                edit: "<span class='highlight'>Painting</span> of <span class='highlight'>red</span> flowers on a tree branch with <span class='highlight'>white</span> background",
-                original: "outputs/image/image28.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image28_edit_Painting_of_red_flowers_on_a_t.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit28.png",
-                qwenedit: "outputs/compare_result/edit28.png",
-                winner: "Qwen",
-                analysis: "Accurate painting style. DMD2 color change only."
-            },
-            {
-                id: "93",
-                source: "a <span class='highlight'>collie dog</span> is <span class='highlight'>sitting</span> on a <span class='highlight'>bed</span>",
-                edit: "a <span class='highlight'>Garfield cat</span> is <span class='highlight'>sleeping</span> on a <span class='highlight'>sofa</span>",
-                original: "outputs/image/image93.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image93_edit_a_Garfield_cat_is_sleeping_on_.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit93.png",
-                qwenedit: "outputs/compare_result/edit93.png",
-                winner: "Qwen",
-                analysis: "Garfield + sofa. DMD2 striped cat wrong pose. SwiftEdit cat on bed."
-            },
-            {
-                id: "95",
-                source: "a painting of a fairy with <span class='highlight'>green</span> wings holding a <span class='highlight'>glowing jar</span>",
-                edit: "a painting of a fairy with <span class='highlight'>purple</span> wings holding a <span class='highlight'>white crystal ball</span>",
-                original: "outputs/image/image95.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image95_edit_a_painting_of_a_fairy_with_pur.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit95.png",
-                qwenedit: "outputs/compare_result/edit95.png",
-                winner: "Qwen",
-                analysis: "Perfect purple wings + crystal ball. DMD2 wings still green."
-            },
-            {
-                id: "98",
-                source: "a <span class='highlight'>light bulb</span> hanging from a wire with <span class='highlight'>sky</span> in the background",
-                edit: "a <span class='highlight'>cat</span> hanging from a wire with <span class='highlight'>grass</span> in the background",
-                original: "outputs/image/image98.jpg",
-                swiftedit: "outputs/swiftedit_results/swift_edit_result_img/image98_edit_a_cat_hanging_from_a_wire_with.png",
-                dmd2: "outputs/dmd2_result/result_renoise_edit98.png",
-                qwenedit: "outputs/compare_result/edit98.png",
-                winner: "Qwen",
-                analysis: "Correct cat + grass. DMD2 wind chime instead. SwiftEdit cat face artifact."
-            }
-        ];
-
-        function generateComparisonCards() {
-            const grid = document.getElementById('comparisonGrid');
-            grid.innerHTML = '';
-
-            comparisons.forEach(comp => {
-                const card = document.createElement('div');
-                card.className = 'comparison-card';
-                card.innerHTML = `
-                    <div class="card-header">
-                        <h3>Test Case ${comp.id}</h3>
-                        <div class="prompt-section">
-                            <div class="prompt-line"><strong>Source:</strong> ${comp.source}</div>
-                            <div class="prompt-line"><strong>Edit:</strong> ${comp.edit}</div>
-                        </div>
-                    </div>
-                    <div class="images-container">
-                        <div class="image-item">
-                            <img src="${comp.original}" alt="Original" onclick="openModal(this.src)" onerror="this.style.opacity='0.3'">
-                            <div class="image-label">Original</div>
-                        </div>
-                        
-                        <div class="image-item">
-                            <img src="${comp.swiftedit}" alt="SwiftEdit" onclick="openModal(this.src)" onerror="this.style.opacity='0.3'">
-                            <div class="image-label">SwiftEdit</div>
-                        </div>
-                        <div class="image-item">
-                            <img src="${comp.dmd2}" alt="DMD2" onclick="openModal(this.src)" onerror="this.style.opacity='0.3'">
-                            <div class="image-label">DMD2</div>
-                        </div>
-                        <div class="image-item">
-                            <img src="${comp.qwenedit}" alt="Qwen-Edit" onclick="openModal(this.src)" onerror="this.style.opacity='0.3'">
-                            <div class="image-label">Qwen-Edit</div>
-                        </div>
-                    </div>
-                    <div class="analysis">
-                        <div class="analysis-winner">Winner: ${comp.winner}</div>
-                        <div class="analysis-text">${comp.analysis}</div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
         function openModal(src) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
@@ -559,8 +726,6 @@
                 document.getElementById('imageModal').style.display = 'none';
             }
         });
-
-        generateComparisonCards();
     </script>
 </body>
 
